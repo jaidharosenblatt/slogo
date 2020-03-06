@@ -8,13 +8,13 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
-public class TrailView extends Pane{
+public class Trail extends Pane{
 
   private List<Node> trail = new ArrayList<>();
   private Color currentColor;
   private double currentThickness;
 
-  protected TrailView(Double thickness, Color color) {
+  protected Trail(Double thickness, Color color) {
     this.currentThickness = thickness;
     this.currentColor = color;
   }

@@ -1,67 +1,74 @@
 package slogo.view.turtledisplay;
 
+import java.util.ResourceBundle;
 import javafx.geometry.Point2D;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-
+import javafx.scene.paint.Color;
 
 public class TurtleView extends Pane {
 
-  private ImageView graphic;
-  private Point2D position;
-  private double turtleVisible = 1;
-  private double penActive = 1;
-  private double heading;
+  private Trail trail;
+  private Turtle turtle;
+  private int index;
+  private static final String TURTLE_PATH = "turtles/";
+  private static final String DEFAULT_RESOURCE_PATH = "resources/UI/Default";
+  private ResourceBundle defaults = ResourceBundle.getBundle(DEFAULT_RESOURCE_PATH);
+  private Image turtleImage;
 
-  protected TurtleView(Image image, double x, double y, double heading) {
-    this.graphic = new ImageView(image);
-    graphic.setFitWidth(50);
-    graphic.setFitHeight(50);
-
-    Point2D point = new Point2D(x, y);
-    getChildren().add(graphic);
-
-    setPosition(point);
-    setHeading(heading);
+  public TurtleView(int index) {
+    this.index = index;
+    turtleImage = getImageByName(TURTLE_PATH + defaults.getString("TurtleImage"));
+    reset();
   }
 
-  protected void setPosition(Point2D point) {
-    this.position = point;
-    graphic.setX(point.getX() - graphic.getBoundsInLocal().getWidth() / 2);
-    graphic.setY(point.getY() - graphic.getBoundsInLocal().getHeight() / 2);
+  public void reset() {
+    getChildren().clear();
+    this.turtle = new Turtle(turtleImage, 0, 0, 0);
+    this.trail = new Trail(Double.parseDouble(defaults.getString("PenThickness")),
+        Color.web(defaults.getString("PenColor")));
+
+    getChildren().addAll(trail, turtle);
   }
 
-  protected Point2D getPosition() {
-    return this.position;
+  public void moveTurtle(Point2D newCoordinate) {
+    Point2D oldCoordinate = turtle.getPosition();
+    turtle.setPosition(newCoordinate);
+    if (turtle.isPenActive() == 1) {
+      trail.addLine(oldCoordinate, newCoordinate);
+    }
   }
 
-  protected double getHeading() {
-    return this.heading;
+  public void setTurtleHeading(double newHeading) {
+    turtle.setHeading(newHeading);
   }
 
-  protected void setHeading(double heading) {
-    graphic.setRotate(this.heading = heading);
+  public void setTurtleVisibility(double state) {
+    turtle.setTurtleVisible(state);
   }
 
-  protected double isTurtleVisible() {
-    return turtleVisible;
+  public void setPenState(double state) {
+    turtle.setPenActive(state);
   }
 
-  protected void setTurtleVisible(double isVisible) {
-    this.turtleVisible = isVisible;
-    graphic.setVisible(isVisible == 1);
+
+  public void setPenThickness(Double thickness) {
+    trail.setCurrentThickness(thickness);
   }
 
-  protected double isPenActive() {
-    return penActive;
+  public void setTurtleImage(String filename) {
+    Image image = getImageByName(TURTLE_PATH + filename);
+    turtleImage = image;
+    turtle.setGraphicImage(image);
   }
 
-  protected void setGraphicImage(Image image) { graphic.setImage(image); }
+  public void setPenColor(Color currentColor) {
+    trail.setCurrentColor(currentColor);
+  }
 
-  protected void setPenActive(double penActive) {
-    this.penActive = penActive;
+  private Image getImageByName(String name) {
+
+    return new Image(this.getClass().getClassLoader().getResourceAsStream(name));
   }
 
 }

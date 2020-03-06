@@ -10,29 +10,32 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
+import slogo.Model.Parsing.LanguageConverter;
 
 public class PaletteView extends VBox {
 
-  private List<Pair<Color, String>> colors;
-  private ObservableList<Pair<Color, String>> palette;
+  private ObservableList<String> palette;
   private static final String PATH = "resources/Palettes/";
   private ResourceBundle colorsResources;
-
-  public PaletteView(String language, ObservableList list) {
+  private Actions actions;
+  private LanguageConverter languageConverter;
+  public PaletteView(LanguageConverter language, ObservableList list, Actions actions) {
     palette = list;
-    colorsResources = ResourceBundle.getBundle(PATH + language);
-    createColorList();
+    languageConverter = language;
+    colorsResources = ResourceBundle.getBundle(PATH + language.getLanguage());
+    this.actions = actions;
     ComboBox background = bindList();
     ComboBox pen = bindList();
     background.getSelectionModel().selectedItemProperty().
-            addListener(e-> changeBackgroundColor(background.getSelectionModel().getSelectedItem()));
+            addListener(e-> changeBackgroundColor(background.getSelectionModel().getSelectedIndex()));
     pen.getSelectionModel().selectedItemProperty()
-            .addListener(e -> changePenColor(background.getSelectionModel().getSelectedItem()));
+            .addListener(e -> changePenColor(pen.getSelectionModel().getSelectedIndex()));
     getChildren().addAll(background, pen);
+    setSpacing(30);
   }
 
-  private void changePenColor(Object selectedItem) {
-    //TODO Call method
+  private void changePenColor(int selectedItem) {
+    actions.handlePenColor(selectedItem+"");
   }
 
   private ComboBox bindList(){
@@ -41,25 +44,30 @@ public class PaletteView extends VBox {
     return comboBox;
   }
 
-  private void changeBackgroundColor(Object selectedItem) {
-    //TODO call command
-    System.out.println(selectedItem);
+  private void changeBackgroundColor(int selectedItem) {
+    actions.handleBackgroundColor(selectedItem+"");
   }
 
 
-  private void createColorList() {
-    colors = new ArrayList<>();
-    for (String key : colorsResources.keySet()) {
-      colors.add(new Pair<>(Color.web(key), colorsResources.getString(key)));
+  public Color getColor(int index){
+    String s = palette.get(index);
+    String[] components = s.split(" ");
+    int[] colorRGB = new int[3];
+    for (int j=0; j<colorRGB.length; j++){
+      colorRGB[j]= Integer.parseInt(components[j]);
     }
+    java.awt.Color c = new java.awt.Color(colorRGB[0], colorRGB[1], colorRGB[2]);
+    int a = c.getAlpha();
+    double opacity = a / 255.0 ;
+    Color color = new Color(c.getRed()/255.0, c.getGreen()/255.0, c.getBlue()/255.0, opacity);
+    return color;
   }
 
-  private List<String> createNumberColorList() {
-    List<String> numberColors = new ArrayList<>();
-    for (int i = 0; i < colors.size(); i++) {
-      numberColors.add(i + ". " + colors.get(i).getValue());
-    }
-    return numberColors;
+  public void addColor(Color c){
+    int red = (int)(c.getRed() * 255);
+    int green = (int)(c.getGreen() * 255);
+    int blue = (int)(c.getBlue() * 255);
+    palette.add(red+" "+green+" "+blue);
   }
 
 }

@@ -17,31 +17,19 @@ public class CommandFactory {
     private static final String CLASS_SUFFIX = "Command";
     private static final String RESOURCES = "resources";
     private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
-
-    private static final String COMMAND_NAME_RESOURCES = "languages";
-    private static final String DEFAULT_COMMAND_NAME_PACKAGE = COMMAND_NAME_RESOURCES + ".";
-    private static final String DEFAULT_COMMAND_NAME_RESOURCE_PACKAGE = DEFAULT_RESOURCE_PACKAGE + DEFAULT_COMMAND_NAME_PACKAGE;
-
     private static final String COMMAND_LOCATION_RESOURCES = "CommandPackageLocations";
     private static final String DEFAULT_COMMAND_LOCATION_PACKAGE = COMMAND_LOCATION_RESOURCES + ".";
     private static final String DEFAULT_COMMAND_LOCATION_FILENAME = "CommandLocations";
     private static final String DEFAULT_COMMAND_LOCATION_RESOURCE_PACKAGE = DEFAULT_RESOURCE_PACKAGE + DEFAULT_COMMAND_LOCATION_PACKAGE + DEFAULT_COMMAND_LOCATION_FILENAME;
 
-    private ResourceBundle myCommandNameResources;
     private ResourceBundle myCommandLocationResources;
 
-    private Map<Pattern, String> commands;
     private MethodExplorer methodExplorer;
-
-    public CommandFactory(String lang, MethodExplorer me){
+    private LanguageConverter languageConverter;
+    public CommandFactory(LanguageConverter lang, MethodExplorer me){
         myCommandLocationResources = ResourceBundle.getBundle(DEFAULT_COMMAND_LOCATION_RESOURCE_PACKAGE);
-        setupLanguage(lang);
+        languageConverter = lang;
         methodExplorer = me;
-    }
-
-    public void setupLanguage(String lang) {
-        myCommandNameResources = ResourceBundle.getBundle(DEFAULT_COMMAND_NAME_RESOURCE_PACKAGE + lang);
-        initializeMap();
     }
 
     public Command getCommand(String commandCall) throws ParsingException {
@@ -75,27 +63,9 @@ public class CommandFactory {
         return methodExplorer.getMethod(commandName) != null;
     }
 
-    private void initializeMap() {
-        commands = new HashMap<>();
-        for (String key : myCommandNameResources.keySet()) {
-            String val = myCommandNameResources.getString(key);
-            commands.put(Pattern.compile(val), key);
-        }
-    }
 
     private String getCommandOfficialName(String command){
-        for (Pattern key : commands.keySet()) {
-            if(match(command, key)) {
-                return commands.get(key);
-            }
-        }
-        return null;
+        return languageConverter.getCommandOfficialName(command);
     }
-
-    private boolean match (String text, Pattern regex) {
-        return regex.matcher(text).matches();
-    }
-
-
 
 }

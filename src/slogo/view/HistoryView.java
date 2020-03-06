@@ -15,20 +15,18 @@ public class HistoryView {
     private static ResourceBundle resourceBundle;
     private static final String RESOURCES_HISTORY = "resources/Layouts/SettingsTab/";
     private static final String RESOURCES_LAYOUT = "resources/UI/";
-    private String language;
+    private LanguageConverter languageConverter;
     private Tab myTab;
     private ObservableList<String> history;
     private ListView<String> list;
     private Actions actions;
-    private LanguageConverter languageConverter;
-    public HistoryView(String language, ObservableList<String> historyList, Actions actions){
-        this.language= language;
-        resourceBundle = ResourceBundle.getBundle(RESOURCES_LAYOUT + language);
+    public HistoryView(LanguageConverter language, ObservableList<String> historyList, Actions actions){
+        languageConverter= language;
+        resourceBundle = ResourceBundle.getBundle(RESOURCES_LAYOUT + language.getLanguage());
         myTab = new Tab(resourceBundle.getString("HistoryTab"));
         history = historyList;
         list = new ListView<String>();
         this.actions = actions;
-        languageConverter = new LanguageConverter(language);
         setupTab();
     }
     public Tab getTab(){
@@ -49,11 +47,13 @@ public class HistoryView {
     private void print() {
         actions.handleHistoryVariable(list.getSelectionModel().getSelectedItem());
     }
+
     private void emptyHistory() {
         if (!history.isEmpty()) {
             history.clear();
         }
     }
+
     public void setLanguage(String newLanguage) {
         for (int i =0; i<history.size(); i++){
             String oldString = history.get(i);
@@ -61,8 +61,5 @@ public class HistoryView {
             System.out.println(newString);
             history.set(i ,newString);
         }
-        language = newLanguage;
-        languageConverter.updateLanguage(newLanguage);
-
     }
 }

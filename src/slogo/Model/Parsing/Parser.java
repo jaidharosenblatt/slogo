@@ -13,7 +13,7 @@ public class Parser{
     private Stack<Command> commandStack;
     private Stack<Integer> countFromStack;
     public Parser(CommandManager cm){
-        factory = new CommandFactory(cm.getLanguage(), cm.getMethodExplorer());
+        factory = new CommandFactory(cm.getLanguageConverter(), cm.getMethodExplorer());
         commandManager = cm;
         unlimitedParametersCommands = new Stack<>();
         argumentStack = new Stack<>();

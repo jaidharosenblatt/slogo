@@ -20,6 +20,19 @@ public class Turtle implements ImmutableTurtle{
         this(0, 0, 0, 1, 1, 1, DEFAULT_PEN_THICKNESS, 0,0, id);
     }
 
+    public Turtle(ImmutableTurtle originalTurtle){
+        this.myX = originalTurtle.getX();
+        this.myY = originalTurtle.getY();
+        this. myHeading = originalTurtle.getHeading();
+        this.myPenState = originalTurtle.getPenState();
+        this.myShowing = originalTurtle.getShowing();
+        this.myIsActive = originalTurtle.isActive();
+        this.myPenThickness = originalTurtle.getPenThickness();
+        this.myPenColorIndex = originalTurtle.getPenColorIndex();
+        this.myTurtleImageIndex = originalTurtle.getTurtleImageIndex();
+        this.myId = originalTurtle.getID();
+    }
+
     public Turtle(double x, double y, double heading, double penState, double showing, double isActive,
                            double penThickness, double penColorIndex, double turtleImageIndex, double id){
         this.myX = x;
@@ -35,7 +48,7 @@ public class Turtle implements ImmutableTurtle{
     }
 
     public ImmutableTurtle getImmutableTurtle(){
-        return this;
+        return new Turtle(this);
     }
 
     public void setX(double x) {

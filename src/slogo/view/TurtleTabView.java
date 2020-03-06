@@ -13,6 +13,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import javafx.util.converter.IntegerStringConverter;
+import slogo.Model.Parsing.LanguageConverter;
 import slogo.Model.TurtleModel.ImmutableTurtle;
 import slogo.ReflectionException;
 
@@ -26,14 +27,14 @@ public class TurtleTabView {
     private static ResourceBundle actionResources;
     private static final String RESOURCES_LAYOUT = "resources/UI/";
     private static final String RESOURCES_TURTLE_COLS = "resources/Layouts/turtlestab/";
-    private String language;
+    private LanguageConverter languageConverter;
     private Tab myTab;
     private Actions actions;
     private TableView<ImmutableTurtle> tableView;
-    public TurtleTabView(String language, Actions actions){
-        this.language = language;
-        resourceBundle = ResourceBundle.getBundle(RESOURCES_LAYOUT+language);
-        actionResources = ResourceBundle.getBundle(RESOURCES_TURTLE_COLS+language);
+    public TurtleTabView(LanguageConverter language, Actions actions){
+        languageConverter = language;
+        resourceBundle = ResourceBundle.getBundle(RESOURCES_LAYOUT+language.getLanguage());
+        actionResources = ResourceBundle.getBundle(RESOURCES_TURTLE_COLS+language.getLanguage());
         myTab = new Tab(resourceBundle.getString("TurtleTab"));
         this.actions= actions;
         tableView= new TableView<>();

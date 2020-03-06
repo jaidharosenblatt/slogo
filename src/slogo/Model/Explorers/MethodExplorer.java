@@ -12,9 +12,9 @@ public class MethodExplorer {
 
     private ObservableMap<String, UserDefinedInstructionCommand> methodMap;
     private LanguageConverter languageConverter;
-    public MethodExplorer(String language){
+    public MethodExplorer(LanguageConverter language){
         methodMap = FXCollections.observableMap(new HashMap<>());
-        languageConverter = new LanguageConverter(language);
+        languageConverter = language;
     }
 
     public void addMethod(UserDefinedInstructionCommand method) throws ParsingException {
@@ -33,7 +33,6 @@ public class MethodExplorer {
         for (String name: methodMap.keySet()){
             methodMap.get(name).translateCommands(languageConverter, newLanguage);
         }
-        languageConverter.updateLanguage(newLanguage);
     }
 
     public ObservableMap<String, UserDefinedInstructionCommand> getMethodNames(){

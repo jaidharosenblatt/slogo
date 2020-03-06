@@ -6,6 +6,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import java.util.*;
 import javafx.scene.text.Text;
+import slogo.Model.Parsing.LanguageConverter;
 import slogo.view.Actions;
 import slogo.view.components.Component;
 import slogo.view.components.ComponentFactory;
@@ -21,17 +22,17 @@ public class SettingView extends VBox {
 
   private static ResourceBundle layouts;
 
-  public SettingView(String language, Actions actions) {
+  public SettingView(LanguageConverter language, Actions actions) {
     layouts = ResourceBundle.getBundle(RESOURCES_LAYOUTS);
 
-    setupTab(language, actions);
+    setupTab(language.getLanguage(), actions);
   }
 
   protected HBox createLabel(String prompt) {
     HBox hbox = new HBox();
     Text text = new Text(prompt);
     hbox.getChildren().add(text);
-    hbox.setPadding((new Insets(W_PADDING, W_PADDING, W_PADDING, W_PADDING)));
+    hbox.setPadding((new Insets(W_PADDING)));
     hbox.setAlignment(Pos.CENTER);
     hbox.setSpacing(V_PADDING);
     text.getStyleClass().add("settings-text");

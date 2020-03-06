@@ -9,6 +9,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.VBox;
 import javafx.util.converter.DoubleStringConverter;
 import slogo.Model.Explorers.Variables.Variable;
+import slogo.Model.Parsing.LanguageConverter;
 
 import java.util.ResourceBundle;
 
@@ -16,13 +17,15 @@ public class VariableView <E>{
     private ObservableList<Variable> variables;
     private Tab myTab;
     private TableView<Variable> tableView;
+    private LanguageConverter languageConverter;
     private static final String RESOURCE_PATH = "resources/UI/";
     private static ResourceBundle resourceBundle;
-    public VariableView(String language, ObservableList variableList){
-        resourceBundle = ResourceBundle.getBundle(RESOURCE_PATH + language);
+    public VariableView(LanguageConverter language, ObservableList variableList){
+        resourceBundle = ResourceBundle.getBundle(RESOURCE_PATH + language.getLanguage());
         variables=variableList;
         myTab = new Tab(resourceBundle.getString("VariableTab"));
         this.tableView = new TableView<Variable>(variables);
+        languageConverter = language;
         setupTab();
     }
 

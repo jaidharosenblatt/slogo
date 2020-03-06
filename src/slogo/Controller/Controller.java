@@ -9,6 +9,7 @@ import slogo.Model.Explorers.MethodExplorer;
 import slogo.Model.Explorers.PaletteExplorer;
 import slogo.Model.Explorers.Variables.VariableExplorer;
 import slogo.Model.Parsing.CommandManager;
+import slogo.Model.Parsing.LanguageConverter;
 import slogo.Model.TurtleModel.ImmutableTurtle;
 import slogo.view.Actions;
 import slogo.view.Visualizer;
@@ -33,6 +34,7 @@ public class Controller implements PropertyChangeListener {
   private Configuration myConfiguration;
   private static final String DEFAULT_LANGUAGE = "English";
   private String language = DEFAULT_LANGUAGE;
+  private LanguageConverter languageConverter;
 
   private List<ImmutableTurtle> turtleList;
 
@@ -40,13 +42,14 @@ public class Controller implements PropertyChangeListener {
     myActions = new Actions();
     myActions.addChangeListener(this);
     myStage = stage;
-    myVisualizer = new Visualizer(stage, language, myActions);
-    PaletteExplorer myPE = new PaletteExplorer(language, myActions);
-    MethodExplorer myME = new MethodExplorer(language);
+    languageConverter = new LanguageConverter(language);
+    myVisualizer = new Visualizer(stage, languageConverter, myActions);
+    PaletteExplorer myPE = new PaletteExplorer(languageConverter, myActions);
+    MethodExplorer myME = new MethodExplorer(languageConverter);
     VariableExplorer myVE = new VariableExplorer();
-    backendManager = new CommandManager(myVisualizer, myME, myVE, myPE, language);
+    backendManager = new CommandManager(myVisualizer, myME, myVE, myPE, languageConverter);
     myHistory = new History();
-    myVisualizer.bindTabs(this.language, myHistory.getInputs(), myVE.getDisplayVariables(),
+    myVisualizer.bindTabs(languageConverter, myHistory.getInputs(), myVE.getDisplayVariables(),
         myME.getMethodNames(), myPE.getList());
   }
 
@@ -69,23 +72,12 @@ public class Controller implements PropertyChangeListener {
       case "Language":
         backendManager.setLanguage(value);
         myVisualizer.setHistoryLanguage(value);
+        languageConverter.updateLanguage(value);
         this.language = value;
         break;
-      case "Pen Color":
-        myVisualizer.setPenColor(Color.web(value));
-        break;
       case "Background Color":
-        myVisualizer.setBackgroundColor(Color.web(value));
-        break;
-      case "Turtle Image":
-        myVisualizer.setTurtleImage(value);
-        break;
-      case "Thickness":
-        myVisualizer.setPenThickness(Double.parseDouble(value));
-        break;
-      case "Pen Status":
-        //FIXME update pen status in backend
-        myVisualizer.setPenStatus(Integer.parseInt(value));
+        //myVisualizer.setBackgroundColor(Color.web(value));
+        myVisualizer.setBackgroundColor(Integer.parseInt(value));
         break;
       case "Input Change":
         myVisualizer.setInputText(value);
@@ -116,7 +108,7 @@ public class Controller implements PropertyChangeListener {
     // clearscreen not implemented right now
      */
 
-    myVisualizer.resetTrail();
+    myVisualizer.resetTrail(0);
   }
 
   private void handleRun(String command) {

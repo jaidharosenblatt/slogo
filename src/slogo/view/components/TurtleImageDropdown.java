@@ -1,6 +1,7 @@
 package slogo.view.components;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -9,6 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
 import slogo.view.Actions;
+import slogo.view.components.Component;
 
 public class TurtleImageDropdown extends Component {
 
@@ -17,20 +19,23 @@ public class TurtleImageDropdown extends Component {
 
   private ComboBox<String> comboBox;
 
-  protected TurtleImageDropdown(String language, String key, Actions actions) {
-    super(language, key, actions);
+  protected TurtleImageDropdown(String language, String methodName, Actions target) {
+    super(language, methodName, target);
     ObservableList<String> images = getTurtleImages();
     comboBox = new ComboBox<>();
-    comboBox.setValue(getDefaultFromKey(key));
+    comboBox.setValue(getDefaultFromKey(methodName));
     comboBox.itemsProperty().bind(new SimpleObjectProperty<>(images));
     comboBox.setOnAction(
-        handler -> handleAction(comboBox.getValue()));
+        handler -> handleAction(comboBox.getValue().substring(0, comboBox.getValue().indexOf("\t")+1)));
     getChildren().add(comboBox);
   }
 
   private ObservableList<String> getTurtleImages() {
     File directoryPath = new File(RESOURCE_PATH + TURTLE_PATH);
-    List<String> images = Arrays.asList(directoryPath.list());
+    List<String> images = FXCollections.observableList(new ArrayList<>());
+    for (int i =0; i<directoryPath.list().length; i++){
+      images.add(i+"\t"+directoryPath.list()[i]);
+    }
     Collections.sort(images);
     return FXCollections.observableList(images);
   }

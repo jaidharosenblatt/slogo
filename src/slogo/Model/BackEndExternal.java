@@ -24,4 +24,6 @@ public interface BackEndExternal {
      */
     public void setLanguage(String lang);
 
+    public List<ImmutableTurtle> undoAction();
+
 }

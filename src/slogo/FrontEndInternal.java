@@ -5,8 +5,8 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 import java.beans.EventHandler;
-import slogo.view.turtledisplay.TrailView;
-import slogo.view.turtledisplay.TurtleView;
+import slogo.view.turtledisplay.Trail;
+import slogo.view.turtledisplay.Turtle;
 
 
 /**
@@ -17,7 +17,7 @@ public interface FrontEndInternal {
      * Update the slogo.view based on the changes in the TurtleView object
      * @param turtle is the changed TurtleView
      */
-    public void updateTurtleDisplay(TurtleView turtle);
+    public void updateTurtleDisplay(Turtle turtle);
 
     /**
      * Update the slogo.view based on the changes in the PenView object
@@ -29,7 +29,7 @@ public interface FrontEndInternal {
      * Update the slogo.view based on the changes in the TrailView object
      * @param trail is the changed TrailView
      */
-    public void updateTrailDisplay(TrailView trail);
+    public void updateTrailDisplay(Trail trail);
 
 
     /**

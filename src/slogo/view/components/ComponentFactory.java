@@ -14,6 +14,7 @@ public class ComponentFactory {
 
   public Component getComponent(String language, String key, Actions actions) {
     try {
+      System.out.println(promptBundle.getString(key));
       Class<?> clazz = Class.forName(CLASS_PATH + promptBundle.getString(key));
       Constructor<?> constructor = clazz
           .getDeclaredConstructor(String.class, String.class, Actions.class);

@@ -2,6 +2,7 @@ package slogo.view.terminal;
 
 import java.util.ResourceBundle;
 import javafx.scene.layout.BorderPane;
+import slogo.Model.Parsing.LanguageConverter;
 import slogo.view.Actions;
 
 public class Terminal extends BorderPane {
@@ -14,13 +15,13 @@ public class Terminal extends BorderPane {
   private ErrorBar errorBar;
   private static final double HEIGHT = 150;
 
-  public Terminal(String language, Actions actions) {
-    uiResources = ResourceBundle.getBundle(RESOURCES_UI + language);
+  public Terminal(LanguageConverter language, Actions actions) {
+    uiResources = ResourceBundle.getBundle(RESOURCES_UI + language.getLanguage());
     setPrefHeight(HEIGHT);
 
     errorBar = new ErrorBar();
     input = new TerminalInput(uiResources.getString("TerminalPrompt"));
-    buttons = new TerminalButtons(language, actions, input);
+    buttons = new TerminalButtons(language.getLanguage(), actions, input);
 
     setTop(errorBar);
     setCenter(input);

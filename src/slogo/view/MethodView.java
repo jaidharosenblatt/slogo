@@ -8,6 +8,7 @@ import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import javafx.util.Pair;
 import slogo.Model.Commands.ControlStructures.UserDefinedInstructionCommand;
+import slogo.Model.Parsing.LanguageConverter;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -15,16 +16,16 @@ import java.util.*;
 
 public class MethodView {
     private static ResourceBundle resourceBundle;
-    private String language;
+    private LanguageConverter languageConverter;
     private Tab myTab;
     private ObservableMap<String, UserDefinedInstructionCommand> methods;
     private ListView<String> listView;
     private List<PropertyChangeListener> listener;
     private Actions actions;
-    public MethodView(String language, ObservableMap savedMethodNames, Actions actions){
-        this.language = language;
+    public MethodView(LanguageConverter language, ObservableMap savedMethodNames, Actions actions){
+        languageConverter = language;
         methods = savedMethodNames;
-        resourceBundle = ResourceBundle.getBundle("resources/UI/" + language);
+        resourceBundle = ResourceBundle.getBundle("resources/UI/" + language.getLanguage());
         this.actions = actions;
         listView = new ListView<String>();
         listener = new ArrayList<>();
