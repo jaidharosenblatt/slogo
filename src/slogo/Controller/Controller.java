@@ -1,5 +1,6 @@
 package slogo.Controller;
 
+import javafx.scene.control.Alert;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import slogo.Model.BackEndExternal;
@@ -11,18 +12,25 @@ import slogo.Model.Parsing.CommandManager;
 import slogo.Model.TurtleModel.ImmutableTurtle;
 import slogo.view.Actions;
 import slogo.view.Visualizer;
+import slogo.xml.Chooser;
+import slogo.xml.Configuration;
+import slogo.xml.XMLException;
 import slogo.xml.XMLParser;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
 import java.util.List;
 
 public class Controller implements PropertyChangeListener {
 
+  private Stage myStage;
   private Visualizer myVisualizer;
   private BackEndExternal backendManager;
   private Actions myActions;
   private History myHistory;
+  private XMLParser myXMLParser;
+  private Configuration myConfiguration;
   private static final String DEFAULT_LANGUAGE = "English";
   private String language = DEFAULT_LANGUAGE;
 
@@ -31,6 +39,7 @@ public class Controller implements PropertyChangeListener {
   public Controller(Stage stage) {
     myActions = new Actions();
     myActions.addChangeListener(this);
+    myStage = stage;
     myVisualizer = new Visualizer(stage, language, myActions);
     PaletteExplorer myPE = new PaletteExplorer(language, myActions);
     MethodExplorer myME = new MethodExplorer(language);
@@ -41,9 +50,11 @@ public class Controller implements PropertyChangeListener {
         myME.getMethodNames(), myPE.getList());
   }
 
-  // public Controller(File file) { set the variables based on the xml file
-
-  //}
+  public Controller(File file, Stage stage) { //set the variables based on the xml file
+    this(stage);
+    myXMLParser = new XMLParser();
+    myConfiguration = myXMLParser.getConfiguration(file);
+  }
 
   @Override
   public void propertyChange(PropertyChangeEvent evt) {
@@ -86,7 +97,7 @@ public class Controller implements PropertyChangeListener {
         //TODO update backend index of background color
         break;
       case "Load XML":
-        System.out.println(value);
+        new Controller(new File(value), myStage);
         break;
     }
   }

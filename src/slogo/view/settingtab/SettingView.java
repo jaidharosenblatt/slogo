@@ -9,6 +9,7 @@ import javafx.scene.text.Text;
 import slogo.view.Actions;
 import slogo.view.components.Component;
 import slogo.view.components.ComponentFactory;
+import slogo.view.components.LoadXML;
 
 
 public class SettingView extends VBox {
@@ -52,7 +53,5 @@ public class SettingView extends VBox {
     }
     //HelpButton helpButton = new HelpButton(prompts);
     //getChildren().add(helpButton);
-    LoadXML loadButton = new LoadXML();
-    getChildren().add(loadButton);
   }
 }

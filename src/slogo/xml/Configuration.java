@@ -1,5 +1,6 @@
 package slogo.xml;
 
+import slogo.Model.TurtleModel.ImmutableTurtle;
 import slogo.Model.TurtleModel.Turtle;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ public class Configuration {
             "turtleCount",
             "language"
             //TODO: don't forget about methods and variables
+            // also get RGB values
     );
     public static final List<String> TURTLE_FIELDS = List.of(
             "x",
@@ -35,7 +37,7 @@ public class Configuration {
     private int turtleCount;
     private String myLanguage;
 
-    private List<Turtle> myTurtles;
+    private List<ImmutableTurtle> myTurtles;
 
     public Configuration (String width, String height, String backgroundIndex, String turtleCount, String language, List<List<Double>> turtleList) {
         myWidth = Double.parseDouble(width);
@@ -83,7 +85,7 @@ public class Configuration {
         return myLanguage;
     }
 
-    public List<Turtle> getTurtles() {
+    public List<ImmutableTurtle> getTurtles() {
         return myTurtles;
     }
 }

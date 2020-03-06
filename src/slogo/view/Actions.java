@@ -17,6 +17,7 @@ public class Actions {
   private static final String TERMINAL_INPUT = "Input Change";
   private static final String TURTLE_STATE = "Change Turtle State";
   private static final String METHOD_DISPLAY = "Method Display";
+  private static final String XML = "Load XML";
 
   private String data;
   private List<PropertyChangeListener> listeners = new ArrayList<>();
@@ -62,6 +63,8 @@ public class Actions {
   }
 
   public void handleMethodDisplay(String value){ notifyListeners(TERMINAL_INPUT, this.data, this.data = value);}
+
+  public void handleLoadXML(String value){ notifyListeners(XML, this.data, this.data = value); }
 
   private void notifyListeners(String property, String oldValue, String newValue) {
     for (PropertyChangeListener name : listeners) {
