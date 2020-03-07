@@ -26,7 +26,7 @@ public class SetTowardsCommand extends BackEndCommand {
         double heading = Math.toDegrees(Math.atan((towardX-myTurtle.getX())/(towardY-myTurtle.getY())));
         myTurtle.setHeading(heading);
 
-        commandManager.getInternalStates().add(myTurtle.getImmutableTurtle());
+        commandManager.getTurtleManager().addInternalState(myTurtle);
         return heading - oldHeading;
     }
 

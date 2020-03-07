@@ -18,7 +18,7 @@ public class ForwardCommand extends BackEndCommand {
         double pixForward = getDoubleParameter(params.get(0), commandManager.getVariableExplorer());
         myTurtle.incrementX(pixForward * Math.sin(Math.toRadians(myTurtle.getHeading())));
         myTurtle.incrementY(pixForward * Math.cos(Math.toRadians(myTurtle.getHeading())));
-        commandManager.getInternalStates().add(myTurtle.getImmutableTurtle());
+        commandManager.getTurtleManager().addInternalState(myTurtle);
         return pixForward;
     }
 }

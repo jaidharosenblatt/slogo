@@ -12,9 +12,8 @@ import slogo.view.Visualizer;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class CommandManager implements BackEndExternal {
     private static final String EXECUTE_COMMAND_METHOD_NAME = "executeCommand";
@@ -23,8 +22,9 @@ public class CommandManager implements BackEndExternal {
     private MethodExplorer methodExplorer;
     private VariableExplorer variableExplorer;
     private PaletteExplorer paletteExplorer;
-    private TurtleManager turtleManager;
+    private TurtleModelManager turtleManager;
     private LanguageConverter languageConverter;
+    private Turtle currentTurtle;
 
 
     public CommandManager(Visualizer v, MethodExplorer me, VariableExplorer ve, PaletteExplorer pe, LanguageConverter lang){
@@ -33,29 +33,38 @@ public class CommandManager implements BackEndExternal {
         methodExplorer = me;
         variableExplorer = ve;
         paletteExplorer = pe;
-        turtleManager = new TurtleManager();
+        turtleManager = new TurtleModelManager();
+        currentTurtle = new Turtle(1);
 
     }
 
     @Override
-    public List<ImmutableTurtle> parseTurtleStatesFromCommands(String input) throws ParsingException {
+    public Map<Double, List<ImmutableTurtle>> parseTurtleStatesFromCommands(String input) throws ParsingException {
         clearInternalStates();
-        parseCommands(input);
-
-
-        List<ImmutableTurtle> ret = getInternalStates();
-        System.out.println("States:");
-        for(ImmutableTurtle t: ret){
-            System.out.println(t.getY());
+        TurtleIterator iterator = turtleManager.iterator();
+        while(iterator.hasNext()){
+            currentTurtle = iterator.next();
+            parseCommands(input);
         }
+
+        Map<Double, List<ImmutableTurtle>> retMap = getInternalStates();
+        System.out.println("States:");
+        for(Double d: retMap.keySet()){
+            System.out.println("Index: " + d);
+            for(ImmutableTurtle t: retMap.get(d)){
+                System.out.println("\tID: " + t.getID()+ "    Y: " + t.getY());
+            }
+        }
+
+
         turtleManager.backupTurtleList();
         turtleManager.backupInternalStateList();
 
-        return getInternalStates();
+        return retMap;
     }
 
     @Override
-    public List<ImmutableTurtle> undoAction(){
+    public Map<Double, List<ImmutableTurtle>> undoAction(){
         return turtleManager.undoAction();
     }
 
@@ -71,27 +80,20 @@ public class CommandManager implements BackEndExternal {
 
     protected double actOnCommand(Command command, List<String> params) throws ParsingException {
         try {
-            double ret = 0;
-            TurtleIterator iterator = turtleManager.iterator();
-            while(iterator.hasNext()){
-                Turtle turtle = iterator.next();
-                if(turtle.isActive() == 1){
-                    Method method = command.getClass().getDeclaredMethod(EXECUTE_COMMAND_METHOD_NAME, CommandManager.class, Turtle.class, List.class);
-                    ret = (double) method.invoke(command, this, turtle, params);
-                }
-            }
-            return ret;
+            Method method = command.getClass().getDeclaredMethod(EXECUTE_COMMAND_METHOD_NAME, CommandManager.class, Turtle.class, List.class);
+            return (double) method.invoke(command, this, currentTurtle, params);
         } catch (NoSuchMethodException | IllegalAccessException e) {
             throw new ParsingException("ExecuteMissing", command.toString());
         } catch (InvocationTargetException e) {
             if(e.getCause() instanceof ParsingException){
                 throw (ParsingException) e.getCause();
             }
+            e.printStackTrace();
             throw new ParsingException("CommandExecuteError", command.toString());
         }
     }
 
-    public List<ImmutableTurtle> getInternalStates() {
+    private Map<Double, List<ImmutableTurtle>> getInternalStates() {
         return turtleManager.getInternalStates();
     }
 
@@ -113,6 +115,10 @@ public class CommandManager implements BackEndExternal {
 
     public Visualizer getDisplay(){
         return frontend;
+    }
+
+    public TurtleModelManager getTurtleManager(){
+        return turtleManager;
     }
 
     @Override

@@ -23,22 +23,23 @@ public class TurtleManager extends Pane {
     updatePane();
   }
 
-  public void updateTurtles(List<ImmutableTurtle> turtles) throws ParsingException {
+  public void updateTurtles(Map<Integer, List<ImmutableTurtle>> turtles) throws ParsingException {
     for (int i = 0; i < turtles.size(); i++) {
-      ImmutableTurtle turtleProperties = turtles.get(i);
+      List<ImmutableTurtle> turtleList = turtles.get(i);
       if (turtleMap.get(i) == null) {
         turtleMap.put(i, createTurtle(i));
       }
-      TurtleView turtle = turtleMap.get(i);
-      turtle.setPenState(turtleProperties.getPenState());
-      System.out.println("heading: " + turtleProperties.getHeading());
-      turtle.setTurtleHeading(turtleProperties.getHeading());
-      turtle.setPenThickness(turtleProperties.getPenThickness());
-      if (checkTurtleOutOfBounds(turtleProperties)) {
-        throw new ParsingException("OutOfBoundsException", i);
+      for (ImmutableTurtle turtleState : turtleList){
+        TurtleView turtle = turtleMap.get(i);
+        turtle.setPenState(turtleState.getPenState());
+        //      turtle.setPenColor(turtleProperties.getPenColorIndex());
+        turtle.setTurtleHeading(turtleState.getHeading());
+        turtle.setPenThickness(turtleState.getPenThickness());
+        if (checkTurtleOutOfBounds(turtleState)) {
+          throw new ParsingException("OutOfBoundsException", i);
+        }
+        turtle.moveTurtle(new Point2D(turtleState.getX(), -1* turtleState.getY()));
       }
-      turtle.moveTurtle(new Point2D(turtleProperties.getX(), -1* turtleProperties.getY()));
-//      turtle.setPenColor(turtleProperties.getPenColorIndex());
     }
     updatePane();
   }

@@ -1,48 +1,82 @@
 package slogo.view;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
 import slogo.Model.Parsing.LanguageConverter;
 
-public class PaletteView extends VBox {
+public class PaletteView extends GridPane {
 
   private ObservableList<String> palette;
   private static final String PATH = "resources/Palettes/";
   private ResourceBundle colorsResources;
   private Actions actions;
   private LanguageConverter languageConverter;
+  private VBox background;
+  private VBox pen;
   public PaletteView(LanguageConverter language, ObservableList list, Actions actions) {
     palette = list;
     languageConverter = language;
     colorsResources = ResourceBundle.getBundle(PATH + language.getLanguage());
     this.actions = actions;
-    ComboBox background = bindList();
-    ComboBox pen = bindList();
-    background.getSelectionModel().selectedItemProperty().
-            addListener(e-> changeBackgroundColor(background.getSelectionModel().getSelectedIndex()));
-    pen.getSelectionModel().selectedItemProperty()
-            .addListener(e -> changePenColor(pen.getSelectionModel().getSelectedIndex()));
-    getChildren().addAll(background, pen);
-    setSpacing(30);
+    background = bindList();
+    pen = bindList();
+    palette.addListener((ListChangeListener.Change<? extends String> e)->handleColorAdded(e));
+    add(background, 0,0,1,1);
+    add(pen, 1, 0, 1, 1);
+  }
+
+  private void handleColorAdded(ListChangeListener.Change<? extends String> e) {
+    if (e.wasAdded()){
+      addAdditionalColor();
+    }
+  }
+
+  private void addAdditionalColor() {
+    background.getChildren().add(createColorOption(palette.size()-1));
+    pen.getChildren().add(createColorOption(palette.size()-1));
   }
 
   private void changePenColor(int selectedItem) {
     actions.handlePenColor(selectedItem+"");
   }
 
-  private ComboBox bindList(){
-    ComboBox comboBox = new ComboBox();
-    comboBox.itemsProperty().bind(new SimpleObjectProperty<>(palette));
-    return comboBox;
+  private VBox bindList(){
+    VBox vbox = new VBox();
+    for (int i=0; i< palette.size(); i++){
+      vbox.getChildren().add(createColorOption(i));
+    }
+    return vbox;
   }
+
+  private Node createColorOption(int i) {
+    HBox color = new HBox();
+    Label label = new Label(""+i);
+    Rectangle rect = new Rectangle();
+    rect.setWidth(100);
+    rect.setHeight(10);
+    rect.setFill(getColor(i));
+    color.getChildren().addAll(label, rect);
+    color.setSpacing(10);
+    return color;
+  }
+
 
   private void changeBackgroundColor(int selectedItem) {
     actions.handleBackgroundColor(selectedItem+"");
@@ -68,6 +102,14 @@ public class PaletteView extends VBox {
     int green = (int)(c.getGreen() * 255);
     int blue = (int)(c.getBlue() * 255);
     palette.add(red+" "+green+" "+blue);
+  }
+
+  public List getImmutableList(){
+    List<Color> colors = new ArrayList<>();
+    for (int i =0; i<palette.size(); i++){
+      colors.add(getColor(i));
+    }
+    return Collections.unmodifiableList(colors);
   }
 
 }

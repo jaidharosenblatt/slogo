@@ -1,8 +1,5 @@
 package slogo.Model.TurtleModel;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Turtle implements ImmutableTurtle{
     private static final double DEFAULT_PEN_THICKNESS = 10;
     private double myX;
@@ -16,7 +13,7 @@ public class Turtle implements ImmutableTurtle{
     private double myTurtleImageIndex;
     private double myId;
 
-    public Turtle(int id){
+    public Turtle(double id){
         this(0, 0, 0, 1, 1, 1, DEFAULT_PEN_THICKNESS, 0,0, id);
     }
 

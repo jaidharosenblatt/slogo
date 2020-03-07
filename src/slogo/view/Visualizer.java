@@ -80,7 +80,9 @@ public class Visualizer implements FrontEndExternal {
 
   @Override
   public void updateTurtle(List<ImmutableTurtle> turtleList) throws ParsingException {
-    turtleManager.updateTurtles(turtleList);
+    Map<Integer, List<ImmutableTurtle>> turtles = new HashMap<>();
+    turtles.put(0,turtleList);
+    turtleManager.updateTurtles(turtles);
   }
   @Override
   public void displayError(Exception error) {

@@ -18,7 +18,7 @@ public class RightCommand extends BackEndCommand {
     public double executeCommand(CommandManager commandManager, Turtle myTurtle, List<String> params) throws ParsingException {
         Double degreesRight = getDoubleParameter(params.get(0), commandManager.getVariableExplorer());
         myTurtle.incrementHeading(degreesRight);
-        commandManager.getInternalStates().add(myTurtle.getImmutableTurtle());
+        commandManager.getTurtleManager().addInternalState(myTurtle);
         return degreesRight;
     }
 }

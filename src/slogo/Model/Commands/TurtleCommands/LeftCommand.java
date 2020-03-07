@@ -19,7 +19,7 @@ public class LeftCommand extends BackEndCommand {
     public double executeCommand(CommandManager commandManager, Turtle myTurtle, List<String> params) throws ParsingException {
         Double degreesLeft = getDoubleParameter(params.get(0), commandManager.getVariableExplorer());
         myTurtle.incrementHeading(degreesLeft * -1);
-        commandManager.getInternalStates().add(myTurtle.getImmutableTurtle());
+        commandManager.getTurtleManager().addInternalState(myTurtle);
         return degreesLeft;
     }
 }

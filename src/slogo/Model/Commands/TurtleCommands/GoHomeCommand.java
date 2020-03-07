@@ -18,7 +18,7 @@ public class GoHomeCommand extends BackEndCommand {
         double oldY = myTurtle.getY();
         myTurtle.setToHome();
 
-        commandManager.getInternalStates().add(myTurtle.getImmutableTurtle());
+        commandManager.getTurtleManager().addInternalState(myTurtle);
         return Math.hypot(myTurtle.getX() - oldX, myTurtle.getY() - oldY);
     }
 }

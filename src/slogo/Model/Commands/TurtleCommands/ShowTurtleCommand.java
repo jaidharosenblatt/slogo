@@ -15,7 +15,7 @@ public class ShowTurtleCommand extends BackEndCommand {
 
     public double executeCommand(CommandManager commandManager, Turtle myTurtle, List<String> params) {
         myTurtle.setShowing(1);
-        commandManager.getInternalStates().add(myTurtle.getImmutableTurtle());
+        commandManager.getTurtleManager().addInternalState(myTurtle);
         return 1;
     }
 }

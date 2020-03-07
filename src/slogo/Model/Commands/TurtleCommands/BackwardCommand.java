@@ -19,7 +19,7 @@ public class BackwardCommand extends BackEndCommand {
         double pixBackward = getDoubleParameter(params.get(0), commandManager.getVariableExplorer());
         myTurtle.incrementX(pixBackward * Math.sin(Math.toRadians(myTurtle.getHeading())) * -1);
         myTurtle.incrementY(pixBackward * Math.cos(Math.toRadians(myTurtle.getHeading())) * -1);
-        commandManager.getInternalStates().add(myTurtle.getImmutableTurtle());
+        commandManager.getTurtleManager().addInternalState(myTurtle);
         return pixBackward;
 
     }

@@ -24,7 +24,7 @@ public class SetPositionCommand extends BackEndCommand {
         myTurtle.setX(newX);
         myTurtle.setY(newY);
 
-        commandManager.getInternalStates().add(myTurtle.getImmutableTurtle());
+        commandManager.getTurtleManager().addInternalState(myTurtle);
         return Math.hypot(newX - oldX, newY - oldY);
     }
 

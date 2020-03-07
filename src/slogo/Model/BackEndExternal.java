@@ -4,6 +4,7 @@ import slogo.Model.ErrorHandling.ParsingException;
 import slogo.Model.TurtleModel.ImmutableTurtle;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Interface containing Backend methods that are meant for the Frontend to use
@@ -15,7 +16,7 @@ public interface BackEndExternal {
      * @param input from the Console
      * @return a list of ImmutableTurtle states to execute
      */
-    public List<ImmutableTurtle> parseTurtleStatesFromCommands(String input) throws ParsingException;
+    public Map<Double, List<ImmutableTurtle>> parseTurtleStatesFromCommands(String input) throws ParsingException;
 
     /**
      * Changes the parsing language to the given language as well as
@@ -24,6 +25,6 @@ public interface BackEndExternal {
      */
     public void setLanguage(String lang);
 
-    public List<ImmutableTurtle> undoAction();
+    public Map<Double, List<ImmutableTurtle>> undoAction();
 
 }
