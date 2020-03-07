@@ -19,7 +19,7 @@ public class Chooser {
         FileChooser result = new FileChooser();
         result.setTitle("Open Data File");
         // start searching for files in data folder
-        result.setInitialDirectory(new File(System.getProperty("user.dir") + File.separator + "data"));
+        result.setInitialDirectory(new File(System.getProperty("user.dir") + File.separator + "data" + File.separator + "xml"));
         result.getExtensionFilters().setAll(new FileChooser.ExtensionFilter("Text Files", extensionAccepted));
         return result;
     }

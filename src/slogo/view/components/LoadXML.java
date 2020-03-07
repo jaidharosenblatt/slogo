@@ -20,6 +20,8 @@ public class LoadXML extends Component {
 
     private void handleLoadXML() {
         dataFile = Chooser.FILE_CHOOSER.showOpenDialog(new Stage());
-        handleAction(dataFile.getPath());
+        if(dataFile != null) {
+            handleAction(dataFile.getPath());
+        }
     }
 }
