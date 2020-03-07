@@ -123,7 +123,7 @@ public class Controller implements PropertyChangeListener {
     // clearscreen not implemented right now
      */
 
-    myVisualizer.resetTrail(0);
+    myVisualizer.resetTrail(0.0);
   }
 
   private void handleRun(String command) {

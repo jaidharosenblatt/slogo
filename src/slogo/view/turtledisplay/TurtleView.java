@@ -10,13 +10,13 @@ public class TurtleView extends Pane {
 
   private Trail trail;
   private Turtle turtle;
-  private int index;
+  private double index;
   private static final String TURTLE_PATH = "turtles/";
   private static final String DEFAULT_RESOURCE_PATH = "resources/UI/Default";
   private ResourceBundle defaults = ResourceBundle.getBundle(DEFAULT_RESOURCE_PATH);
   private Image turtleImage;
 
-  public TurtleView(int index) {
+  public TurtleView(double index) {
     this.index = index;
     turtleImage = getImageByName(TURTLE_PATH + defaults.getString("TurtleImage"));
     reset();

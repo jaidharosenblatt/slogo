@@ -99,10 +99,10 @@ public class Visualizer implements FrontEndExternal {
   }
 
   @Override
-  public void updateTurtle(List<ImmutableTurtle> turtleList) throws ParsingException {
-    Map<Integer, List<ImmutableTurtle>> turtles = new HashMap<>();
-    turtles.put(0,turtleList);
-    turtleManager.updateTurtles(turtles);
+  public void updateTurtle(Map<Double, List<ImmutableTurtle>> turtleList) throws ParsingException {
+    //Map<Integer, List<ImmutableTurtle>> turtles = new HashMap<>();
+    //turtles.put(0,turtleList);
+    turtleManager.updateTurtles(turtleList);
   }
   @Override
   public void displayError(Exception error) {
@@ -129,7 +129,7 @@ public class Visualizer implements FrontEndExternal {
     turtleManager.setBackgroundColor(Color.RED);
   }
 
-  public void resetTrail(int index){
+  public void resetTrail(double index){
     turtleManager.resetTrail(index);
   }
 

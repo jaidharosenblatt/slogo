@@ -8,6 +8,7 @@ import slogo.Model.Parsing.LanguageConverter;
 import slogo.Model.TurtleModel.ImmutableTurtle;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Interface containing Frontend methods that are meant for the Backend to use
@@ -19,7 +20,7 @@ public interface FrontEndExternal {
    *
    * @param turtleList a list of turtle states from the backend
    */
-  void updateTurtle(List<ImmutableTurtle> turtleList) throws ParsingException;
+  void updateTurtle(Map<Double, List<ImmutableTurtle>> turtleList) throws ParsingException;
 
 
   /**
@@ -63,7 +64,7 @@ public interface FrontEndExternal {
    */
   void setInputText(String text);
 
-  void resetTrail(int index);
+  void resetTrail(double index);
 
 
 }
