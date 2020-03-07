@@ -43,7 +43,8 @@ public class Visualizer implements FrontEndExternal {
     stage.show();
   }
 
-  public Visualizer(Stage stage, LanguageConverter language, Actions actions, double width, double height, List<ImmutableTurtle> turtles) {
+  public Visualizer(Stage stage, LanguageConverter language, Actions actions, double width, double height,
+                    double backgroundIndex, List<ImmutableTurtle> turtles) {
     BorderPane root = new BorderPane();
 
     initializeVariables(stage, language, actions);
@@ -53,8 +54,14 @@ public class Visualizer implements FrontEndExternal {
     scene.getStylesheets().add("resources/Styles/default.css");
     stage.setScene(scene);
     stage.show();
+
+
+    Map<Double, List<ImmutableTurtle>> turtleMap = new HashMap<>();
+    for (ImmutableTurtle turtle : turtles) {
+      turtleMap.put(turtle.getID(), turtles);
+    }
     try {
-      updateTurtle(turtles);
+      updateTurtle(turtleMap);
     }
     catch(ParsingException e) {
 

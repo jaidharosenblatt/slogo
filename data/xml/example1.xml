@@ -18,19 +18,19 @@
             <penThickness>5</penThickness>
             <penIndex>0</penIndex>
             <image>0</image>
-            <id>0</id>
+            <id>1</id>
         </turtle>
         <turtle>
-            <x>20</x>
-            <y>20</y>
+            <x>50</x>
+            <y>50</y>
             <heading>20</heading>
-            <penState>0</penState>
-            <showing>0</showing>
-            <isActive>0</isActive>
+            <penState>1</penState>
+            <showing>1</showing>
+            <isActive>1</isActive>
             <penThickness>20</penThickness>
             <penIndex>20</penIndex>
-            <image>20</image>
-            <id>1</id>
+            <image>0</image>
+            <id>2</id>
         </turtle>
     </turtles>
 </preferences>

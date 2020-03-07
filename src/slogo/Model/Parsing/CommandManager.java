@@ -4,6 +4,7 @@ import slogo.Model.BackEndExternal;
 import slogo.Model.Explorers.MethodExplorer;
 import slogo.Model.Commands.Command;
 import slogo.Model.Explorers.PaletteExplorer;
+import slogo.Model.Explorers.Variables.Variable;
 import slogo.Model.TurtleModel.ImmutableTurtle;
 import slogo.Model.TurtleModel.Turtle;
 import slogo.Model.ErrorHandling.ParsingException;
@@ -35,7 +36,12 @@ public class CommandManager implements BackEndExternal {
         paletteExplorer = pe;
         turtleManager = new TurtleModelManager();
         currentTurtle = new Turtle(1);
+    }
 
+    public CommandManager(Visualizer v, MethodExplorer me, VariableExplorer ve, PaletteExplorer pe, LanguageConverter lang,
+                          List<ImmutableTurtle> turtles) {
+        this(v, me, ve, pe, lang);
+        
     }
 
     @Override

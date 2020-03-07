@@ -26,7 +26,6 @@ import java.util.Map;
 
 public class Controller implements PropertyChangeListener {
 
-  private Stage myStage;
   private Visualizer myVisualizer;
   private BackEndExternal backendManager;
   private Actions myActions;
@@ -42,7 +41,6 @@ public class Controller implements PropertyChangeListener {
 
 
   public Controller(Stage stage) {
-    myStage = stage;
     languageConverter = new LanguageConverter(language);
     initializeVariables();
 
@@ -59,8 +57,8 @@ public class Controller implements PropertyChangeListener {
     initializeVariables();
 
     myVisualizer = new Visualizer(stage, languageConverter, myActions, myConfiguration.getWidth(),
-            myConfiguration.getHeight(), myConfiguration.getTurtles()); //FIXME: Visualizer also needs backgroundIndex eventually
-    backendManager = new CommandManager(myVisualizer, myME, myVE, myPE, languageConverter);
+            myConfiguration.getHeight(), myConfiguration.getBackgroundIndex(), myConfiguration.getTurtles());
+    backendManager = new CommandManager(myVisualizer, myME, myVE, myPE, languageConverter, myConfiguration.getTurtles());
     myVisualizer.bindTabs(languageConverter, myHistory.getInputs(), myVE.getDisplayVariables(),
             myME.getMethodNames(), myPE.getList());
   }
@@ -104,7 +102,7 @@ public class Controller implements PropertyChangeListener {
         //TODO update backend index of background color
         break;
       case "Load XML":
-        new Controller(new File(value), myStage);
+        new Controller(new File(value), new Stage());
         break;
     }
   }
