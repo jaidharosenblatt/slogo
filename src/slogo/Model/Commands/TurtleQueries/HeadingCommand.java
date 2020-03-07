@@ -12,8 +12,5 @@ public class HeadingCommand extends BackEndCommand {
         return myTurtle.getHeading();
     }
 
-    @Override
-    public int getNumArguments() {
-        return 0;
-    }
+
 }

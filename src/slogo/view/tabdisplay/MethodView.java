@@ -1,4 +1,4 @@
-package slogo.view;
+package slogo.view.tabdisplay;
 
 import javafx.collections.*;
 import javafx.geometry.Pos;
@@ -9,13 +9,14 @@ import javafx.util.Callback;
 import javafx.util.Pair;
 import slogo.Model.Commands.ControlStructures.UserDefinedInstructionCommand;
 import slogo.Model.Parsing.LanguageConverter;
+import slogo.view.Actions;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.*;
 
 public class MethodView {
-    private static ResourceBundle resourceBundle;
+    private ResourceBundle resourceBundle;
     private LanguageConverter languageConverter;
     private Tab myTab;
     private ObservableMap<String, UserDefinedInstructionCommand> methods;
@@ -105,7 +106,7 @@ public class MethodView {
             TextField input = new TextField();
             int j = i+1;
             //TODO make not hard coded
-            input.setPromptText("Parameter "+j);
+            input.setPromptText(resourceBundle.getString("Parameter")+" "+j);
             vbox.getChildren().add(input);
         }
         vbox.setSpacing(10);
@@ -141,8 +142,6 @@ public class MethodView {
             listView.getItems().remove(c.getKey());
         }
     }
-
-
     private Button makeClearButton() {
         Button clearButton = new Button(resourceBundle.getString("ClearButton"));
         clearButton.setOnAction(e->clearSavedMethods());

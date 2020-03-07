@@ -9,9 +9,6 @@ public class EntityListIterator implements Iterator {
     private static final String OPEN_BRACKET = "[";
     private static final String CLOSED_BRACKET = "]";
 
-    private static final String OPEN_PARENTHESES= "(";
-    private static final String CLOSED_PARENTHESES = ")";
-
     private List<String> entityList;
     private int indexInEntityList;
     private Map<String, String> bracketChars;

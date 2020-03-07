@@ -41,7 +41,7 @@ public abstract class Component extends Pane {
       Method m = actions.getClass().getDeclaredMethod(methodBundle.getString(key), String.class);
       m.invoke(actions, value);
     } catch (Exception e) {
-      throw new ReflectionException("InvalidMethod", methodBundle.getString(key));
+      throw  new ReflectionException("InvalidMethod", methodBundle.getString(key));
     }
   }
 
@@ -49,7 +49,7 @@ public abstract class Component extends Pane {
     return defaultsResources.getString(key);
   }
 
-  public String getPromptFromKey() {
+  public String getPromptFromKey(String key) {
     return promptBundle.getString(key);
   }
 

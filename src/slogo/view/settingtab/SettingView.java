@@ -47,7 +47,7 @@ public class SettingView extends VBox {
     for (String key : buttonList) {
       HBox hbox = new HBox();
       Component component = componentFactory.getComponent(language, key, actions);
-      hbox.getChildren().add(createLabel(component.getPromptFromKey()));
+      hbox.getChildren().add(createLabel(component.getPromptFromKey(key)));
       hbox.getChildren().add(component);
 
       getChildren().add(hbox);

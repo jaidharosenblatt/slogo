@@ -9,10 +9,6 @@ import java.util.List;
 
 public class NaturalLogCommand extends BackEndCommand {
 
-    @Override
-    public int getNumArguments() {
-        return 1;
-    }
 
     public double executeCommand(CommandManager commandManager, Turtle myTurtle, List<String> params) throws ParsingException {
         if(getDoubleParameter(params.get(0), commandManager.getVariableExplorer()) < 0){

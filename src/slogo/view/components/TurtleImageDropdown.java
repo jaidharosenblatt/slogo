@@ -26,7 +26,7 @@ public class TurtleImageDropdown extends Component {
     comboBox.setValue(getDefaultFromKey(methodName));
     comboBox.itemsProperty().bind(new SimpleObjectProperty<>(images));
     comboBox.setOnAction(
-        handler -> handleAction(comboBox.getValue().substring(0, comboBox.getValue().indexOf("\t")+1)));
+        handler -> handleAction(comboBox.getValue().substring(0, comboBox.getValue().indexOf("\t"))));
     getChildren().add(comboBox);
   }
 

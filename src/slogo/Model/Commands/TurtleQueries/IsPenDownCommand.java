@@ -12,8 +12,4 @@ public class IsPenDownCommand extends BackEndCommand {
         return myTurtle.getPenState();
     }
 
-    @Override
-    public int getNumArguments() {
-        return 0;
-    }
 }

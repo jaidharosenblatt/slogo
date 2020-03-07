@@ -8,10 +8,7 @@ import java.util.List;
 
 public class PenUpCommand extends BackEndCommand {
 
-    @Override
-    public int getNumArguments() {
-        return 0;
-    }
+
 
     public double executeCommand(CommandManager commandManager, Turtle myTurtle, List<String> params) {
         myTurtle.setPenState(0);

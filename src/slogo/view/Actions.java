@@ -50,10 +50,6 @@ public class Actions {
     notifyListeners(PEN_COLOR, this.data, this.data = value);
   }
 
-  public void handleThickness(String value) {
-    notifyListeners(THICKNESS, this.data, this.data = value);
-  }
-
   public void handleHistoryVariable (String value) { notifyListeners(TERMINAL_INPUT, this.data, this.data=value); }
 
   public void handleTurtleState(String id, String showing) {

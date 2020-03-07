@@ -1,4 +1,4 @@
-package slogo.view;
+package slogo.view.tabdisplay;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
@@ -6,6 +6,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import slogo.Model.Parsing.LanguageConverter;
+import slogo.view.Actions;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;

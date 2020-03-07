@@ -9,10 +9,6 @@ import java.util.List;
 
 public class NotEqualCommand extends BackEndCommand {
 
-    @Override
-    public int getNumArguments() {
-        return 2;
-    }
 
     public double executeCommand(CommandManager commandManager, Turtle myTurtle, List<String> params) throws ParsingException {
         boolean isNotEqual = getDoubleParameter(params.get(0), commandManager.getVariableExplorer()) !=

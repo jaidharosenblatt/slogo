@@ -15,8 +15,4 @@ public class SetBackgroundCommand extends BackEndCommand {
         return index;
     }
 
-    @Override
-    public int getNumArguments() {
-        return 1;
-    }
 }

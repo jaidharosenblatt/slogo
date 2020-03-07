@@ -1,4 +1,4 @@
-package slogo.view;
+package slogo.view.tabdisplay;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -16,6 +16,7 @@ import javafx.util.converter.IntegerStringConverter;
 import slogo.Model.Parsing.LanguageConverter;
 import slogo.Model.TurtleModel.ImmutableTurtle;
 import slogo.ReflectionException;
+import slogo.view.Actions;
 
 import java.lang.reflect.Method;
 import java.util.Collections;
@@ -23,28 +24,32 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class TurtleTabView {
-    private static ResourceBundle resourceBundle;
-    private static ResourceBundle actionResources;
-    private static final String RESOURCES_LAYOUT = "resources/UI/";
-    private static final String RESOURCES_TURTLE_COLS = "resources/Layouts/turtlestab/";
+    private ResourceBundle resourceBundle;
+    private ResourceBundle actionResources;
+    private ResourceBundle layoutResources;
+    private static final String RESOURCES_PATH = "resources/UI/";
+    private static final String RESOURCE_LAYOUTS = RESOURCES_PATH + "Layouts";
+    private static final String METHODS_PATH = RESOURCES_PATH + "ReflectionMethods";
     private LanguageConverter languageConverter;
     private Tab myTab;
     private Actions actions;
     private TableView<ImmutableTurtle> tableView;
-    public TurtleTabView(LanguageConverter language, Actions actions){
+
+    public TurtleTabView(LanguageConverter language, Actions actions) {
         languageConverter = language;
-        resourceBundle = ResourceBundle.getBundle(RESOURCES_LAYOUT+language.getLanguage());
-        actionResources = ResourceBundle.getBundle(RESOURCES_TURTLE_COLS+language.getLanguage());
+        resourceBundle = ResourceBundle.getBundle(RESOURCES_PATH + language.getLanguage());
+        layoutResources = ResourceBundle.getBundle(RESOURCE_LAYOUTS);
+        actionResources = ResourceBundle.getBundle(METHODS_PATH);
         myTab = new Tab(resourceBundle.getString("TurtleTab"));
-        this.actions= actions;
-        tableView= new TableView<>();
+        this.actions = actions;
+        tableView = new TableView<>();
         setupTab();
     }
 
     private void setupTab() {
         VBox vbox = new VBox();
-        List<String> columnList = Collections.list(actionResources.getKeys());
-        for (String col: columnList){
+        String[] cols = layoutResources.getString("TurtleTabView").split(",");
+        for (String col : cols) {
             TableColumn column = createColumn(col);
             tableView.getColumns().add(column);
         }
@@ -66,19 +71,15 @@ public class TurtleTabView {
         return column;
     }
 
-    private void addUneditableColumn(TableColumn c, String col){
-        c.setCellValueFactory(new PropertyValueFactory<ImmutableTurtle,Object>(col));
+    private void addUneditableColumn(TableColumn c, String col) {
+        c.setCellValueFactory(new PropertyValueFactory<ImmutableTurtle, Object>(col));
     }
 
-    private void addCheckBox(TableColumn c, String col){
+    private void addCheckBox(TableColumn c, String col) {
         c.setCellValueFactory(
-                new Callback<TableColumn.CellDataFeatures<ImmutableTurtle,Boolean>, ObservableValue<Boolean>>()
-                {
-                    //This callback tell the cell how to bind the data model 'Registered' property to
-                    //the cell, itself.
+                new Callback<TableColumn.CellDataFeatures<ImmutableTurtle, Boolean>, ObservableValue<Boolean>>() {
                     @Override
-                    public ObservableValue<Boolean> call(TableColumn.CellDataFeatures<ImmutableTurtle, Boolean> param)
-                    {
+                    public ObservableValue<Boolean> call(TableColumn.CellDataFeatures<ImmutableTurtle, Boolean> param) {
                         return new SimpleBooleanProperty(param.getValue().getShowing() == 1);
                     }
                 });
@@ -88,18 +89,24 @@ public class TurtleTabView {
     }
 
     private void editTurtleState(CheckBoxTableCell c) {
-            ImmutableTurtle t = tableView.getSelectionModel().getSelectedItem();
-            String status = t.getShowing()==1 ? "pu" : "pd";
+        ImmutableTurtle t = tableView.getSelectionModel().getSelectedItem();
+        if (t != null) {
+            String status = t.getShowing() == 1 ? "pu" : "pd";
             actions.handleTurtleState(t.getX() + "", status);
+        }
     }
-
     /**
      * returns Tab for states of turtles
      * @return myTab
      */
-    public Tab getTab(){ return myTab; }
-
-    public void setTable(ImmutableTurtle turtle){
+    public Tab getTab() {
+        return myTab;
+    }
+    /**
+     * reset table after each run with states of each turtle
+     * @param turtle list of turtles
+     */
+    public void setTable(ImmutableTurtle turtle) {
         List<ImmutableTurtle> list = List.of(turtle);
         tableView.setItems(FXCollections.observableList(list));
     }

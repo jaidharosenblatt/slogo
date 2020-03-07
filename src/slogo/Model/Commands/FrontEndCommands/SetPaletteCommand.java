@@ -8,10 +8,7 @@ import slogo.Model.TurtleModel.Turtle;
 import java.util.List;
 
 public class SetPaletteCommand extends BackEndCommand {
-    @Override
-    public int getNumArguments() {
-        return 4;
-    }
+
 
     @Override
     public double executeCommand(CommandManager commandManager, Turtle myTurtle, List<String> params) throws ParsingException {

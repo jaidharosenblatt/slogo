@@ -1,6 +1,10 @@
-package slogo.view;
+package slogo.view.tabdisplay;
 
+import java.util.List;
 import java.util.ResourceBundle;
+
+import javafx.beans.Observable;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.scene.control.Tab;
@@ -9,6 +13,7 @@ import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.paint.Color;
 import slogo.Model.Parsing.LanguageConverter;
 import slogo.Model.TurtleModel.ImmutableTurtle;
+import slogo.view.Actions;
 import slogo.view.settingtab.SettingView;
 
 
@@ -36,7 +41,7 @@ public class TabPaneView {
     this.actions = actions;
   }
 
-  protected TabPane getTabPane() {
+  public TabPane getTabPane() {
     return tabPane;
   }
 
@@ -74,11 +79,18 @@ public class TabPaneView {
   public void createHistoryTab(LanguageConverter language, ObservableList historyList) {
     historyView = new HistoryView(language, historyList, actions);
     tabPane.getTabs().add(historyView.getTab());
+    Observable j = FXCollections.observableList(List.of(" ", " "));
+
   }
 
   public Color getColor(int index){
     return paletteView.getColor(index);
   }
+
+  public List getImmutablePaletteList(){
+    return paletteView.getImmutableList();
+  }
+
   public void updateTurtleTab(ImmutableTurtle turtle){
     turtleTabView.setTable(turtle);
   }

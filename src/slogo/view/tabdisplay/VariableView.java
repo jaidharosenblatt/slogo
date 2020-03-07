@@ -1,4 +1,4 @@
-package slogo.view;
+package slogo.view.tabdisplay;
 
 import javafx.collections.*;
 import javafx.event.Event;
@@ -65,7 +65,6 @@ public class VariableView <E>{
         Variable v = tableView.getSelectionModel().getSelectedItem();
         v.setValue(e.getNewValue());
     }
-
 
     private Button makeClearButton() {
         Button clearButton = new Button(resourceBundle.getString("ClearButton"));

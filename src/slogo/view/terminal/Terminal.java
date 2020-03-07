@@ -7,7 +7,6 @@ import slogo.view.Actions;
 
 public class Terminal extends BorderPane {
 
-  private static final String RESOURCES_TERMINAL = "resources/Layouts/Terminal/";
   private static final String RESOURCES_UI = "resources/UI/";
   private static ResourceBundle uiResources;
   private TerminalButtons buttons;

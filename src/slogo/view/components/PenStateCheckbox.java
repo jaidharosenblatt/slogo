@@ -11,7 +11,8 @@ public class PenStateCheckbox extends Component {
     checkBox.setSelected(true);
     checkBox.selectedProperty().addListener(
         handler -> {
-          String status = checkBox.isSelected() ? "pu" : "pd";
+          String status =
+              checkBox.isSelected() ? getCommandByKey("PenDown", 0) : getCommandByKey("PenUp", 0);
           handleAction(status);
         });
     getChildren().add(checkBox);

@@ -12,8 +12,4 @@ public class YCoordinateCommand extends BackEndCommand {
         return myTurtle.getY();
     }
 
-    @Override
-    public int getNumArguments() {
-        return 0;
-    }
 }

@@ -47,25 +47,10 @@ public class CommandManager implements BackEndExternal {
     @Override
     public Map<Double, List<ImmutableTurtle>> parseTurtleStatesFromCommands(String input) throws ParsingException {
         clearInternalStates();
-        TurtleIterator iterator = turtleManager.iterator();
-        while(iterator.hasNext()){
-            currentTurtle = iterator.next();
-            parseCommands(input);
-        }
-
+        parseCommands(input);
         Map<Double, List<ImmutableTurtle>> retMap = getInternalStates();
-        System.out.println("States:");
-        for(Double d: retMap.keySet()){
-            System.out.println("Index: " + d);
-            for(ImmutableTurtle t: retMap.get(d)){
-                System.out.println("\tID: " + t.getID()+ "    Y: " + t.getY());
-            }
-        }
-
-
         turtleManager.backupTurtleList();
         turtleManager.backupInternalStateList();
-
         return retMap;
     }
 
@@ -77,26 +62,35 @@ public class CommandManager implements BackEndExternal {
 
 
     public double parseCommands(String input) throws ParsingException {
-        Parser parser = new Parser(this);
-        return parser.parseCommands(input);
+        TurtleIterator iterator = turtleManager.iterator();
+        double ret = 0;
+        while(iterator.hasNext()){
+            currentTurtle = iterator.next();
+            Parser parser = new Parser(this);
+            ret = parser.parseCommands(input);
+        }
+        return ret;
     }
 
 
 
 
     protected double actOnCommand(Command command, List<String> params) throws ParsingException {
+        double ret = 0;
         try {
-            Method method = command.getClass().getDeclaredMethod(EXECUTE_COMMAND_METHOD_NAME, CommandManager.class, Turtle.class, List.class);
-            return (double) method.invoke(command, this, currentTurtle, params);
+            if(currentTurtle.isActive() == 1.0) {
+                Method method = command.getClass().getDeclaredMethod(EXECUTE_COMMAND_METHOD_NAME, CommandManager.class, Turtle.class, List.class);
+                ret = (double) method.invoke(command, this, currentTurtle, params);
+            }
         } catch (NoSuchMethodException | IllegalAccessException e) {
             throw new ParsingException("ExecuteMissing", command.toString());
         } catch (InvocationTargetException e) {
             if(e.getCause() instanceof ParsingException){
                 throw (ParsingException) e.getCause();
             }
-            e.printStackTrace();
             throw new ParsingException("CommandExecuteError", command.toString());
         }
+        return ret;
     }
 
     private Map<Double, List<ImmutableTurtle>> getInternalStates() {

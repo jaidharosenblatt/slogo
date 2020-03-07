@@ -6,6 +6,10 @@ import slogo.Model.ErrorHandling.ParsingException;
 import java.util.*;
 
 public class Parser{
+
+    private static final String START_UNLIMITED_PARAMETERS_CHARACTER = "(";
+    private static final String END_UNLIMITED_PARAMETERS_CHARACTER = ")";
+
     private CommandFactory factory;
     private CommandManager commandManager;
     private Stack<Command> unlimitedParametersCommands;
@@ -27,9 +31,6 @@ public class Parser{
      * @param input from the Console
      */
     public double parseCommands(String input) throws ParsingException {
-//        System.out.println("AAA");
-//        System.out.println(input);
-//        System.out.println("AAA");
         if(input == null || input.length() == 0){
             return 0;
         }
@@ -45,7 +46,7 @@ public class Parser{
             try {
                 String item = entityIterator.next();
                 item = checkStartUnlimitedParameters(entityIterator, item);
-                if(item.equals(")")){
+                if(item.equals(END_UNLIMITED_PARAMETERS_CHARACTER)){
                     handleStacksAtEndOfUnlimitedParameters(lastReturn);
                 }
                 else{
@@ -72,24 +73,19 @@ public class Parser{
     private void determineCommandOrArg(String item) throws ParsingException {
         if(factory.isCommand(item)){
             pushCommand(item);
-            System.out.println("OnCommand: " + item);
         }
         else{
             argumentStack.push(item);
-            System.out.println("OnArgs: " + item);
         }
     }
 
     private String checkStartUnlimitedParameters(EntityListIterator entityIterator, String item) throws ParsingException {
-        if(item.equals("(")){
+        if(item.equals(START_UNLIMITED_PARAMETERS_CHARACTER)){
             item = entityIterator.next();
             if(!factory.isCommand(item)){
                 throw new ParsingException("UnlimitedParamNotCommand", item);
             }
-
             unlimitedParametersCommands.push(pushCommand(item));
-            System.out.println("OnUnlimited: " + item);
-            System.out.println("OnCommand: " + item);
             item = entityIterator.next();
         }
         return item;
@@ -109,7 +105,6 @@ public class Parser{
         Command com = factory.getCommand(item);
         commandStack.push(com);
         countFromStack.push(argumentStack.size());
-        System.out.println("OnInteger: " + argumentStack.size());
         return com;
     }
 
@@ -120,24 +115,7 @@ public class Parser{
                 Command topCom = commandStack.peek();
                 int numArguments = argumentStack.size();
                 if(numArguments - countFromStack.peek() >= topCom.getNumArguments()) {
-                    topCom = commandStack.pop();
-                    System.out.println("OffCommand: " + topCom.toString());
-                    List<String> params = getParametersFromArgStack(numArguments);
-                    ret = commandManager.actOnCommand(topCom, params);
-                    String result = ret + "";
-                    if (!unlimitedParametersCommands.isEmpty() && topCom == unlimitedParametersCommands.peek()) {
-                        commandStack.push(topCom);
-                        System.out.println("OnCommandA: " + topCom.toString());
-                        if(topCom.getNumArguments() > 1){
-                            argumentStack.push(result);
-                        }
-                    }
-                    else {
-                        argumentStack.push(result);
-                        System.out.println("OnArgs: " + result);
-                        System.out.println("OffInteger: " + countFromStack.pop());
-                        //countFromStack.pop();
-                    }
+                    ret = handleParamsArgs(numArguments);
                 }
                 else{
                     return ret;
@@ -150,14 +128,29 @@ public class Parser{
         return ret;
     }
 
+    private double handleParamsArgs(int numArguments) throws ParsingException {
+        Command topCom;
+        double ret;
+        topCom = commandStack.pop();
+        List<String> params = getParametersFromArgStack(numArguments);
+        ret = commandManager.actOnCommand(topCom, params);
+        String result = ret + "";
+        if (!unlimitedParametersCommands.isEmpty() && topCom == unlimitedParametersCommands.peek()) {
+            commandStack.push(topCom);
+            if(topCom.getNumArguments() > 1){
+                argumentStack.push(result);
+            }
+        }
+        else {
+            argumentStack.push(result);
+        }
+        return ret;
+    }
+
     private List<String> getParametersFromArgStack(int numArguments) {
         List<String> params = new ArrayList<>();
         for (int i = 0; i < numArguments - countFromStack.peek(); i++) {
-            String s = argumentStack.pop();
-            System.out.println("OffArgs: " + s);
-            params.add(s);
-            //params.add(argumentStack.pop());
-
+            params.add(argumentStack.pop());
         }
         Collections.reverse(params);
         return params;

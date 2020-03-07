@@ -12,8 +12,4 @@ public class IsShowingCommand extends BackEndCommand {
         return myTurtle.getShowing();
     }
 
-    @Override
-    public int getNumArguments() {
-        return 0;
-    }
 }

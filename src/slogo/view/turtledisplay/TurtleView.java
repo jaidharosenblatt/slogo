@@ -1,5 +1,6 @@
 package slogo.view.turtledisplay;
 
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
@@ -13,8 +14,12 @@ public class TurtleView extends Pane {
   private double index;
   private static final String TURTLE_PATH = "turtles/";
   private static final String DEFAULT_RESOURCE_PATH = "resources/UI/Default";
+  private static final String LAYOUT_RESOURCE_PATH = "resources/UI/Layouts";
+
   private ResourceBundle defaults = ResourceBundle.getBundle(DEFAULT_RESOURCE_PATH);
+  private ResourceBundle layouts = ResourceBundle.getBundle(LAYOUT_RESOURCE_PATH);
   private Image turtleImage;
+  private String[] filenames;
 
   public TurtleView(double index) {
     this.index = index;
@@ -27,7 +32,7 @@ public class TurtleView extends Pane {
     this.turtle = new Turtle(turtleImage, 0, 0, 0);
     this.trail = new Trail(Double.parseDouble(defaults.getString("PenThickness")),
         Color.web(defaults.getString("PenColor")));
-
+    filenames = layouts.getString("TurtleImages").split(",");
     getChildren().addAll(trail, turtle);
   }
 
@@ -51,6 +56,10 @@ public class TurtleView extends Pane {
     turtle.setPenActive(state);
   }
 
+  public void setShape(double index) {
+    System.out.println("called");
+    setTurtleImage(filenames[(int) index]);
+  }
 
   public void setPenThickness(Double thickness) {
     trail.setCurrentThickness(thickness);

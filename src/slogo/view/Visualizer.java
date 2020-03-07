@@ -4,22 +4,21 @@ import java.util.*;
 
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
-import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import slogo.FrontEndExternal;
 import slogo.Model.Parsing.LanguageConverter;
 import slogo.Model.TurtleModel.ImmutableTurtle;
 import slogo.Model.ErrorHandling.ParsingException;
+import slogo.view.tabdisplay.TabPaneView;
 import slogo.view.terminal.Terminal;
 import slogo.view.turtledisplay.TurtleManager;
 
-public class Visualizer implements FrontEndExternal {
+public class Visualizer extends BorderPane implements FrontEndExternal {
 
   private static final String DEFAULT_LANGUAGE = "English";
   private static ResourceBundle resourceBundle;
@@ -32,12 +31,10 @@ public class Visualizer implements FrontEndExternal {
   private static final double SCENE_HEIGHT = 600;
 
   public Visualizer(Stage stage, LanguageConverter language, Actions actions) {
-    BorderPane root = new BorderPane();
-
     initializeVariables(stage, language, actions);
-    addPanesToRoot(root);
+    addPanesToRoot();
 
-    Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
+    Scene scene = new Scene(this, SCENE_WIDTH, SCENE_HEIGHT);
     scene.getStylesheets().add("resources/Styles/default.css");
     stage.setScene(scene);
     stage.show();
@@ -45,16 +42,13 @@ public class Visualizer implements FrontEndExternal {
 
   public Visualizer(Stage stage, LanguageConverter language, Actions actions, double width, double height,
                     double backgroundIndex, List<ImmutableTurtle> turtles) {
-    BorderPane root = new BorderPane();
-
     initializeVariables(stage, language, actions);
-    addPanesToRoot(root);
+    addPanesToRoot();
 
-    Scene scene = new Scene(root, width, height);
+    Scene scene = new Scene(this, width, height);
     scene.getStylesheets().add("resources/Styles/default.css");
     stage.setScene(scene);
     stage.show();
-
 
     Map<Double, List<ImmutableTurtle>> turtleMap = new HashMap<>();
     for (ImmutableTurtle turtle : turtles) {
@@ -78,16 +72,15 @@ public class Visualizer implements FrontEndExternal {
     tabPaneView = new TabPaneView(languageConverter, actions);
   }
 
-  private void addPanesToRoot(BorderPane root) {
+  private void addPanesToRoot() {
     Pane displayNode = turtleManager;
     displayNode.getStyleClass().add("display");
-
     TabPane tabNode = tabPaneView.getTabPane();
 
-    root.setCenter(displayNode);
+    setCenter(displayNode);
     BorderPane.setAlignment(tabNode, Pos.TOP_LEFT);
-    root.setLeft(tabNode);
-    root.setBottom(terminal);
+    setLeft(tabNode);
+    setBottom(terminal);
   }
 
   private void setBundle() {
@@ -100,15 +93,14 @@ public class Visualizer implements FrontEndExternal {
           .getBundle("resources/UI/" + language);
     }
   }
-
+  
   public void setInputText(String text) {
     terminal.setInputText(text);
   }
 
   @Override
   public void updateTurtle(Map<Double, List<ImmutableTurtle>> turtleList) throws ParsingException {
-    //Map<Integer, List<ImmutableTurtle>> turtles = new HashMap<>();
-    //turtles.put(0,turtleList);
+    turtleManager.setPalette(tabPaneView.getImmutablePaletteList());
     turtleManager.updateTurtles(turtleList);
   }
   @Override
@@ -133,11 +125,16 @@ public class Visualizer implements FrontEndExternal {
   @Override
   //FIXME
   public void setBackgroundColor(double color) {
-    turtleManager.setBackgroundColor(Color.RED);
+    int index = (int) color;
+    turtleManager.setBackgroundColor(tabPaneView.getColor(index));
   }
 
   public void resetTrail(double index){
     turtleManager.resetTrail(index);
+  }
+
+  public void resetErrorBar(){
+    terminal.setErrorText("");
   }
 
 }

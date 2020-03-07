@@ -69,12 +69,41 @@ public class TurtleModelManager implements Iterable{
 
     public void inactivateAll() {
         for(Turtle turtle: turtles.values()){
-            turtle.setIsActive(0);
+            turtle.setIsActive(0.0);
         }
     }
 
-    public void activateTurtle(double id){
+    public void activateAll() {
+        for(Turtle turtle: turtles.values()){
+            turtle.setIsActive(1.0);
+        }
+    }
+
+    public Turtle activateTurtle(double id){
         turtles.putIfAbsent(id, new Turtle(id));
         turtles.get(id).setIsActive(1);
+        return turtles.get(id);
+    }
+
+    public List<Double> getActiveTurtleIDs(){
+        List<Double> activeIDs = new ArrayList<>();
+        TurtleIterator iterator = new TurtleIterator(turtles);
+        while(iterator.hasNext()){
+            Turtle current = iterator.next();
+            if(current.isActive() == 1.0){
+                activeIDs.add(current.getID());
+            }
+        }
+        return activeIDs;
+    }
+
+    public void activateTurtles(List<Double> ids){
+        for(double id: ids){
+            activateTurtle(id);
+        }
+    }
+
+    public double getNumTurtles(){
+        return turtles.size();
     }
 }

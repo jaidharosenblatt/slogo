@@ -8,10 +8,7 @@ import java.util.List;
 
 public class HideTurtleCommand extends BackEndCommand {
 
-    @Override
-    public int getNumArguments() {
-        return 0;
-    }
+
 
     public double executeCommand(CommandManager commandManager, Turtle myTurtle, List<String> params) {
         myTurtle.setShowing(0);
