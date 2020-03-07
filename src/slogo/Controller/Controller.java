@@ -30,6 +30,9 @@ public class Controller implements PropertyChangeListener {
   private Visualizer myVisualizer;
   private BackEndExternal backendManager;
   private Actions myActions;
+  private PaletteExplorer myPE;
+  private MethodExplorer myME;
+  private VariableExplorer myVE;
   private History myHistory;
   private XMLParser myXMLParser;
   private Configuration myConfiguration;
@@ -39,24 +42,36 @@ public class Controller implements PropertyChangeListener {
 
 
   public Controller(Stage stage) {
-    myActions = new Actions();
-    myActions.addChangeListener(this);
     myStage = stage;
     languageConverter = new LanguageConverter(language);
+    initializeVariables();
+
     myVisualizer = new Visualizer(stage, languageConverter, myActions);
-    PaletteExplorer myPE = new PaletteExplorer(languageConverter, myActions);
-    MethodExplorer myME = new MethodExplorer(languageConverter);
-    VariableExplorer myVE = new VariableExplorer();
     backendManager = new CommandManager(myVisualizer, myME, myVE, myPE, languageConverter);
-    myHistory = new History();
     myVisualizer.bindTabs(languageConverter, myHistory.getInputs(), myVE.getDisplayVariables(),
         myME.getMethodNames(), myPE.getList());
   }
 
   public Controller(File file, Stage stage) { //set the variables based on the xml file
-    this(stage);
     myXMLParser = new XMLParser();
     myConfiguration = myXMLParser.getConfiguration(file);
+    languageConverter = new LanguageConverter(myConfiguration.getLanguage());
+    initializeVariables();
+
+    myVisualizer = new Visualizer(stage, languageConverter, myActions, myConfiguration.getWidth(),
+            myConfiguration.getHeight(), myConfiguration.getTurtles()); //FIXME: Visualizer also needs backgroundIndex eventually
+    backendManager = new CommandManager(myVisualizer, myME, myVE, myPE, languageConverter);
+    myVisualizer.bindTabs(languageConverter, myHistory.getInputs(), myVE.getDisplayVariables(),
+            myME.getMethodNames(), myPE.getList());
+  }
+
+  private void initializeVariables() {
+    myActions = new Actions();
+    myActions.addChangeListener(this);
+    myPE = new PaletteExplorer(languageConverter, myActions);
+    myME = new MethodExplorer(languageConverter);
+    myVE = new VariableExplorer();
+    myHistory = new History();
   }
 
   @Override

@@ -32,23 +32,43 @@ public class Visualizer implements FrontEndExternal {
   private static final double SCENE_HEIGHT = 600;
 
   public Visualizer(Stage stage, LanguageConverter language, Actions actions) {
-    languageConverter = language;
-    setBundle();
-    stage.setTitle(resourceBundle.getString("Title"));
-
     BorderPane root = new BorderPane();
 
-    terminal = new Terminal(languageConverter, actions);
-
-    turtleManager = new TurtleManager();
-
-    tabPaneView = new TabPaneView(languageConverter, actions);
+    initializeVariables(stage, language, actions);
     addPanesToRoot(root);
 
     Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
     scene.getStylesheets().add("resources/Styles/default.css");
     stage.setScene(scene);
     stage.show();
+  }
+
+  public Visualizer(Stage stage, LanguageConverter language, Actions actions, double width, double height, List<ImmutableTurtle> turtles) {
+    BorderPane root = new BorderPane();
+
+    initializeVariables(stage, language, actions);
+    addPanesToRoot(root);
+
+    Scene scene = new Scene(root, width, height);
+    scene.getStylesheets().add("resources/Styles/default.css");
+    stage.setScene(scene);
+    stage.show();
+    try {
+      updateTurtle(turtles);
+    }
+    catch(ParsingException e) {
+
+    }
+
+  }
+
+  private void initializeVariables(Stage stage, LanguageConverter language, Actions actions) {
+    languageConverter = language;
+    setBundle();
+    stage.setTitle(resourceBundle.getString("Title"));
+    terminal = new Terminal(languageConverter, actions);
+    turtleManager = new TurtleManager();
+    tabPaneView = new TabPaneView(languageConverter, actions);
   }
 
   private void addPanesToRoot(BorderPane root) {
