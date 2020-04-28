@@ -1,10 +1,13 @@
-parser
+Simple Logo (Slogo) Parser
 ====
 
 This project implements a development environment that helps users write SLogo programs.
 
 Names:Milan Bhat (mb554), Ryan Weeratunga (rkw14), Robert Chen (rec43), Jaidha Rosenblatt (jrr59)
 
+![alt text](https://i.imgur.com/g0QiPA6.png "Flower")
+![alt text](https://i.imgur.com/YoZ56A6.png
+ "Multiple turtles")
 
 ### Timeline
 
@@ -15,34 +18,8 @@ Finish Date: 3/7
 Hours Spent: 320 total
 
 ### Primary Roles
-* Milan Bhat - Backend
-    * Primary Responsibilities
-        * Parsing
-        * Command + subclasses
-        * Error Handling
-        * Turtle
-        * Pen
-        * Trail
-    * Secondary Responsibilities
-        * Controller
-* Ryan Weeratunga - Tabs and Explorers
-    * Primary Responsibilities
-        * History
-        * HistoryView
-        * Variable
-        * VariableExplorer
-        * VariableExplorerView
-        * Method
-    * Secondary Responsibilities
-        * PenView
-        * TurtleView
-        * TrailView
-        * Visualizer
-        * Console
-        * UserInterface
-        * Display
 * Jaidha Rosenblatt - Front End
-    * Primary Responsibilites
+    * Primary Responsibilities
         * Styles
         * SettingView
         * Components package (actions, component, factory, many objects)
@@ -52,7 +29,7 @@ Hours Spent: 320 total
         * Turtle (gui)
         * Trail (gui)
         * Terminal
-        * Impelementing listner design pattern
+        * Implementing listener design pattern
     * Secondary Responsibilities
         * History
         * HistoryView
@@ -70,9 +47,32 @@ Hours Spent: 320 total
         * Turtle
         * Pen
         * Trail
-
-### Resources Used
-
+ * Milan Bhat - Backend
+     * Primary Responsibilities
+         * Parsing
+         * Command + subclasses
+         * Error Handling
+         * Turtle
+         * Pen
+         * Trail
+     * Secondary Responsibilities
+         * Controller
+ * Ryan Weeratunga - Tabs and Explorers
+     * Primary Responsibilities
+         * History
+         * HistoryView
+         * Variable
+         * VariableExplorer
+         * VariableExplorerView
+         * Method
+     * Secondary Responsibilities
+         * PenView
+         * TurtleView
+         * TrailView
+         * Visualizer
+         * Console
+         * UserInterface
+         * Display
 
 ### Running the Program
 
@@ -97,9 +97,6 @@ Features implemented:
 * Recognize and correctly perform multiple turtle commands
 * Recognize and correctly perform display commands
 * Recognize and correctly perform commands with unlimited parameters
-* Allow users to save and load the state of the environment
-* 
-
 
 ### Notes/Assumptions
 
@@ -113,13 +110,8 @@ Assumptions or Simplifications:
 Interesting data files:
 
 Known Bugs:
-* Clear screen command does not work clear since it is ovveridden by parser passing immutable turtles
+* Clear screen command does not work clear since it is overridden by parser passing immutable turtles
 
 Extra credit:
 * Dark mode
 * Slider for changing GUI turtle movement
-
-### Impressions
-Our impression of this project is that it taught us about properly separating the front end and backend, as well as how to divide responsibility. By first developing API interfaces, we created contracts with each other dictating the actions that each of us could perform in one another's area of work. While we changed these APIs significantly as we worked, we believe that this is due to the fact that this was our first time designing APIs. Now having a better understanding of what to think about while designing APIs, we will definitely be able to design future APIs that are more accurate to what is actually needed.
-
-It was also super helfpul to practice data-driven design using reflection. It was very satisfying to see how using reflection led to shorter code and more flexible design. We also learned about how to use event listeners for various objects and the challenges that arise within them.

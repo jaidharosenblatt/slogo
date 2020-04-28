@@ -27,8 +27,9 @@ public class SettingView extends VBox {
 
   /**
    * Constructs a settings tab
+   *
    * @param language the gui language
-   * @param actions the possible methods to map actions to
+   * @param actions  the possible methods to map actions to
    */
   public SettingView(LanguageHandler language, Actions actions) {
     layouts = ResourceBundle.getBundle(RESOURCES_LAYOUTS);

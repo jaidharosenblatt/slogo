@@ -1,4 +1,4 @@
-package slogo.view.components;
+fgetCommandByKeypackage slogo.view.components;
 
 import java.io.File;
 import java.util.ArrayList;
